@@ -3,8 +3,6 @@ from flask import Flask, request, jsonify
 import yt_dlp
 
 app = Flask(__name__)
-
-# Plugin folder (agar future mein koi custom site add karni ho to)
 os.environ['YTDLP_PLUGIN_DIRS'] = './plugins'
 
 @app.route('/extract')
@@ -15,6 +13,11 @@ def extract():
     ydl_opts = {
         'quiet': True,
         'format': 'best[height<=720]',
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['web', 'android', 'ios', 'mweb'],
+            }
+        },
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
